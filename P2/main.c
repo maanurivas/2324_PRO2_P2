@@ -50,13 +50,61 @@ Postcondiciones: -
  */
 
 void Upgrade(tUserName userName, tListU *U);
+/*
+ * Objetivo:  Cambiar la categoria del participante, de basic a pro.
+ * Entrada:   Un nombre de usuario (tipo tUserName) y la lista (tipo tListU).
+ * Salida:    La confirmación de que se ha cambiado la categoría, o en su defecto,
+ *            La confirmación de que no se ha encontrado el usuario en la lista.
+ * Precondiciones: -
+ * Postcondiciones: -
+ */
 void Play(tUserName userName, tSongTitle songTitle, tPlayTime playTime, tListU *U);
+/*
+Objetivo:  Reproducción de playTime (minutos) de una canción por parte de un usuario.
+Entrada:   Un nombre de usuario (tipo tUserName), un nombre de cancion (tipo tSongTitle), el tiempo de reproduccion en minutos (tipo tPlayTime) y la lista(tipo tListU).
+Salida:    La confirmación de que se ha reproducido la canción, o en su defecto,
+           la confirmación de que no se ha encontrado el usuario en la lista.
+Precondiciones: -
+Postcondiciones: -
+*/
 void Stats(tListU U);
+/*
+Objetivo: Listar los usuarios actuales de MUSFIC y sus datos.
+Entrada:  Una lista (tipo tListL)
+Salida:   Todos los datos que se requiere mostrar, o error en caso de que no se puedan mostrar estadisticas.
+Precondiciones: -
+Postcondiciones: -
+*/
 void Remove(tPlayTime maxTime, tListU U);
+/*
+Objetivo: Elimina todos los usuarios basic cuyo contador de tiempo de reproducción exceda maxTime minutos.
+Entrada:  Un maximo de minutos de reproducción (tipo tPlayTime) y la lista (tipo tListU)
+Salida:   La confirmacion de que se han borrado todos los usuarios que excedan el tiempo máximo, o en su defect,
+          la confirmación de que no se han eliminado o no hay usuarios que lo excedan.
+Precondiciones: -
+Postcondiciones: -
+*/
+
+char *UserCategory_to_char(tUserCategory category);
+/*
+Objetivo: Convierte el parametro introducido al programa (basic/pro) a tipo char
+Entrada: Un elemento tUserCategory
+Salida: Devuelve true en caso de que el parametro introducido sea "basic" o false en caso contrario
+Precondiciones: Recibe basic o pro
+Postcondiciones: -
+*/
+
+tUserCategory char_to_UserCategory(char param[]);
+/*
+Objetivo: Convierte el parametro introducido al programa ("basic"/"pro") a tipo tUserCategory
+Entrada: Un elemento char
+Salida: Devuelve true en caso de que el parametro introducido sea "basic" o false en caso contrario
+Precondiciones: Recibe "basic" o "pro"
+Postcondiciones: -
+*/
 
 
-
-void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3) {
+void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3, tListU *U) {
 
     switch (command) {
         case 'N':
@@ -85,7 +133,8 @@ void readTasks(char *filename) {
     char *commandNumber, *command, *param1, *param2, *param3;
     const char delimiters[] = " \n\r";
     char buffer[MAX_BUFFER];
-
+    tListU U;
+    createEmptyListU(&U);
     f = fopen(filename, "r");
 
     if (f != NULL) {
@@ -97,7 +146,7 @@ void readTasks(char *filename) {
             param2 = strtok(NULL, delimiters);
             param3 = strtok(NULL, delimiters);
 
-            processCommand(commandNumber, command[0], param1, param2, param3);
+            processCommand(commandNumber, command[0], param1, param2, param3, &U);
         }
 
         fclose(f);
@@ -124,3 +173,15 @@ int main(int nargs, char **args) {
 
     return 0;
 }
+
+char *UserCategory_to_char(tUserCategory category){
+    return category ? "basic" : "pro";
+}
+
+
+tUserCategory char_to_UserCategory(char param[]){
+    return (strcmp(param, "basic") == 0);
+}
+
+
+
