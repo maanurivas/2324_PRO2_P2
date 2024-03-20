@@ -32,3 +32,9 @@
 5	64	7326325524820755	CMakeFiles/test_song_list.dir/test_song_list.c.obj	3a8683fe30fbb1f1
 1	72	7326325524894300	CMakeFiles/test_song_list.dir/song_list.c.obj	f1ab6d9901c10ea0
 72	133	7326325525473508	C:/Users/MSI/Desktop/practica2/P2/bin/test_song_list.exe	786db984a01d6d48
+12	139	7326597729487656	CMakeFiles/main.dir/user_list.c.obj	e6b3d87732174cbd
+7	139	7326597729487656	CMakeFiles/main.dir/main.c.obj	3d47ac742df1ad2
+1	139	7326597729487656	CMakeFiles/main.dir/song_list.c.obj	a17bf2aae6cc67a0
+139	364	7326597731701372	C:/Users/MSI/Desktop/practica2/P2/bin/main.exe	ffc23134bd03e503
+2	55	7326597875476847	CMakeFiles/main.dir/main.c.obj	3d47ac742df1ad2
+55	107	7326597875973836	C:/Users/MSI/Desktop/practica2/P2/bin/main.exe	ffc23134bd03e503

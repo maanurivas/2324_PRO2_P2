@@ -108,7 +108,8 @@ void processCommand(char *commandNumber, char command, char *param1, char *param
 
     switch (command) {
         case 'N':
-            printf("Command: %s %c %s %s\n", commandNumber, command, param1, param2);
+            printf("********************\n"
+                   "%s %c: user %s category %s\n",commandNumber, command,param1,param2);
             break;
         case 'D':
             break;
@@ -182,6 +183,33 @@ char *UserCategory_to_char(tUserCategory category){
 tUserCategory char_to_UserCategory(char param[]){
     return (strcmp(param, "basic") == 0);
 }
+
+
+void New(tUserName userName, tUserCategory userCategory, tListU *U){
+    tItemU ITEM;
+    bool insertado;
+    char* UserCategory;//variables auxiliares para trabajar sobre ellas
+
+    if(findItemU(userName, *U) != NULLU){//comprobamos si el participante ya está en la lista
+        printf("+ Error: New not possible\n");//Error al realizar New, participante ya dado de alta
+    } else{
+        strcpy(ITEM.userName,userName);//copiamos el dato del nombre en el nombre del nuevo
+        ITEM.userCategory=userCategory;//asignamos su categoria a la variable correspondiente
+        insertado = insertItemU(ITEM, U);//insertamos el usuario
+        if(!insertado){
+            printf("+ Error: New not possible\n");
+        } else{//con el usuario ya insertado
+            if(ITEM.userCategory){//comprobamos la categoría del usuario para imprimir correctamente la categoría del usuario
+                UserCategory = "basic";
+            } else{
+                UserCategory = "pro";
+            }
+            printf("* New: user %s category %s\n", ITEM.userName, UserCategory);//impresion por pantalla
+        }
+    }
+}
+
+
 
 
 
