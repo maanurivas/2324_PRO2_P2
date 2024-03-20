@@ -79,8 +79,8 @@ tPosS findItemS(tUserName name, tListS S) {
         return NULLS;
     }
     else {
-        for (i = 0; (i < S.lastPos) && (strcmp(name, S.data[i].song.songTitle) != 0); i++); //Recorre la lista hasta que llegue al final o encuentre el nombre.
-        if (strcmp(name, S.data[i].song.songTitle) == 0) { // Comprobamos si encontro el nombre con string compare
+        for (i = 0; (i < S.lastPos) && (strcmp(name, S.data[i].songTitle) != 0); i++); //Recorre la lista hasta que llegue al final o encuentre el nombre.
+        if (strcmp(name, S.data[i].songTitle) == 0) { // Comprobamos si encontro el nombre con string compare
             return i;
         } else {
             return NULLS;

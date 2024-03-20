@@ -21,9 +21,7 @@
 
 typedef int tPosS;
 
-typedef struct {
-    tSong song;
-}tItemS;
+typedef tSong tItemS;
 
 typedef struct{
     tItemS data[MAX];

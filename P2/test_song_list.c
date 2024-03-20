@@ -12,7 +12,7 @@ void print_list(tListS list) {
         pos = firstS(list);
         while (pos != NULLS) {
             item = getItemS(pos, list);
-            printf(" %s playTime %d", item.song.songTitle, item.song.playTime);
+            printf(" %s playTime %d", item.songTitle, item.playTime);
             pos = nextS(pos, list);
         }
     }
@@ -25,7 +25,7 @@ int main() {
     tItemS item1, item2;
 
     /* init */
-    item1.song.playTime = 0;
+    item1.playTime = 0;
 
 
     /* create */
@@ -34,23 +34,23 @@ int main() {
 
 
     /* insert */
-    strcpy(item1.song.songTitle, "song3");
+    strcpy(item1.songTitle, "song3");
     insertItemS(item1, NULLS, &list);
     print_list(list);
 
-    strcpy(item1.song.songTitle, "song1");
+    strcpy(item1.songTitle, "song1");
     insertItemS(item1, firstS(list), &list);
     print_list(list);
 
-    strcpy(item1.song.songTitle, "song5");
+    strcpy(item1.songTitle, "song5");
     insertItemS(item1, NULLS, &list);
     print_list(list);
 
-    strcpy(item1.song.songTitle, "song2");
+    strcpy(item1.songTitle, "song2");
     insertItemS(item1, nextS(firstS(list), list), &list);
     print_list(list);
 
-    strcpy(item1.song.songTitle, "song4");
+    strcpy(item1.songTitle, "song4");
     insertItemS(item1, lastS(list), &list);
     print_list(list);
 
@@ -63,14 +63,14 @@ int main() {
 
     pos = findItemS("song3", list);
     item2 = getItemS(pos, list);
-    printf("%s found\n", item2.song.songTitle);
+    printf("%s found\n", item2.songTitle);
 
 
     /* update */
-    item2.song.playTime = 100;
+    item2.playTime = 100;
     updateItemS(item2, pos, &list);
     item2 = getItemS(pos, list);
-    printf("%s updated playTime %d\n", item2.song.songTitle, item2.song.playTime);
+    printf("%s updated playTime %d\n", item2.songTitle, item2.playTime);
     print_list(list);
 
 
