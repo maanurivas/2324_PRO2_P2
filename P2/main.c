@@ -1,10 +1,10 @@
 /*
  * TITLE: PROGRAMMING II LABS
- * SUBTITLE: Practical 2
- * AUTHOR 1: ***************************** LOGIN 1: **********
- * AUTHOR 2: ***************************** LOGIN 2: **********
- * GROUP: *.*
- * DATE: ** / ** / **
+ * SUBTITLE: Practical 1
+ * AUTHOR 1: Ana Gomez Mesias LOGIN 1: ana.gmesias@udc.es
+ * AUTHOR 2: Manuel Rivas Capeans LOGIN 2: m.rivas.capeans@udc.es
+ * GROUP: 3.3
+ * DATE: 18 / 03 / 2024
  */
 
 #include <stdio.h>
