@@ -16,13 +16,13 @@
 
 #include "types.h"
 
-#define NULLS -1
+#define NULLS (-1)
 #define MAX 25
 
 typedef int tPosS;
 
 typedef struct {
-    tSong song
+    tSong song;
 }tItemS;
 
 typedef struct{
