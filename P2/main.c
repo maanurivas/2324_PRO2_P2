@@ -110,6 +110,7 @@ void processCommand(char *commandNumber, char command, char *param1, char *param
         case 'N':
             printf("********************\n"
                    "%s %c: user %s category %s\n",commandNumber, command,param1,param2);
+            New(param1, char_to_UserCategory(param2),U);
             break;
         case 'D':
             break;
