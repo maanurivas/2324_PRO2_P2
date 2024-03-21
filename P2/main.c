@@ -120,6 +120,9 @@ void processCommand(char *commandNumber, char command, char *param1, char *param
         case 'A':
             break;
         case 'U':
+            printf("********************\n"
+                   "%s %c: user %s\n",commandNumber, command,param1);
+            Upgrade(param1,U);
             break;
         case 'P':
             break;
@@ -235,7 +238,62 @@ void Delete(tUserName userName, tListU *U){
     }
 }
 
+void Upgrade(tUserName userName, tListU *U){
+    tPosU p;
+    tItemU auxITEM;//variables auxiliares para trabajar sobre ellas
 
+    p = findItemU(userName, *U);//buscamos el item
+    if(p==NULLU){//comprobamos si está en la lista
+        printf("+ Error: Upgrade not possible\n");
+    } else{
+        auxITEM = getItemU(p, *U);//caso en el que la categoría ya es pro
+        if (UserCategory_to_char(auxITEM.userCategory) == "pro") {//comprobamos que su categoría no es pro usando una función auxiliar para pasar a char los userCategory
+            printf("+ Error: Upgrade not possible\n");
+        } else{//está en la lista
+            auxITEM.userCategory= char_to_UserCategory("pro"); // Pasamos la categoría a "pro"
+            updateItemU(auxITEM, p, U); // Actualiza el usuario en la lista
+            printf("* Upgrade: user %s category %s\n", userName, UserCategory_to_char(auxITEM.userCategory));//Imprimimos por pantalla
+        }
+    }
+}
 
+void Add(tUserName userName, tSongTitle songTitle, tListU *U){
+    tItemU ITEM;
+    bool insertado;
+    tSong auxSong;
 
+    if(isEmptyListU(U)){//COMPROBAMOS QUE LA LISTA NO ESTÉ VACÍA
+        printf("+ Error: New not possible\n");
+    } else if(findItemU(userName, *U) == NULLU){//COMPROBAMOS QUE EL USUARIO SE ENCUENTRE EN LA LISTA
+        printf("+ Error: New not possible\n");
+    } else if(findItemS(songTitle,ITEM.songList)!=NULLS){//COMPROBAMOS QUE LA CANCIÓN NO EXISTA
+        printf("+ Error: New not possible\n");
+    } else{
+        strcpy(auxSong.songTitle, songTitle);//copiamos el dato del titulo de la cancion en el nombre del elemento a insertar
+        insertado = insertItemS(auxSong,ITEM.songList.lastPos,&ITEM.songList);
+        if(!insertado){
+            printf("+ Error: New not possible\n");
+        } else{
+            printf("* Add: user %s adds song %s",userName, auxSong.songTitle);
+        }
+    }
+
+    /*
+    else{
+        strcpy(ITEM.userName,userName);//copiamos el dato del nombre en el nombre del nuevo
+        ITEM.userCategory=userCategory;//asignamos su categoria a la variable correspondiente
+        insertado = insertItemU(ITEM, U);//insertamos el usuario
+        if(!insertado){
+            printf("+ Error: New not possible\n");
+        } else{//con el usuario ya insertado
+            if(ITEM.userCategory){//comprobamos la categoría del usuario para imprimir correctamente la categoría del usuario
+                UserCategory = "basic";
+            } else{
+                UserCategory = "pro";
+            }
+            printf("* New: user %s category %s\n", ITEM.userName, UserCategory);//impresion por pantalla
+        }
+    }
+     */
+}
 

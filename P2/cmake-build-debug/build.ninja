@@ -50,14 +50,14 @@ cmake_ninja_workdir = C$:/Users/MSI/Desktop/practica2/P2/cmake-build-debug/
 build cmake_object_order_depends_target_test_song_list: phony || CMakeFiles/test_song_list.dir
 
 build CMakeFiles/test_song_list.dir/test_song_list.c.obj: C_COMPILER__test_song_list_unscanned_Debug C$:/Users/MSI/Desktop/practica2/P2/test_song_list.c || cmake_object_order_depends_target_test_song_list
-  DEFINES = -DINPUT_FILE=\"delete1.txt\"
+  DEFINES = -DINPUT_FILE=\"upgrade.txt\"
   DEP_FILE = CMakeFiles\test_song_list.dir\test_song_list.c.obj.d
   FLAGS = -g -std=gnu99 -fdiagnostics-color=always -Wall -Wextra
   OBJECT_DIR = CMakeFiles\test_song_list.dir
   OBJECT_FILE_DIR = CMakeFiles\test_song_list.dir
 
 build CMakeFiles/test_song_list.dir/song_list.c.obj: C_COMPILER__test_song_list_unscanned_Debug C$:/Users/MSI/Desktop/practica2/P2/song_list.c || cmake_object_order_depends_target_test_song_list
-  DEFINES = -DINPUT_FILE=\"delete1.txt\"
+  DEFINES = -DINPUT_FILE=\"upgrade.txt\"
   DEP_FILE = CMakeFiles\test_song_list.dir\song_list.c.obj.d
   FLAGS = -g -std=gnu99 -fdiagnostics-color=always -Wall -Wextra
   OBJECT_DIR = CMakeFiles\test_song_list.dir
@@ -91,14 +91,14 @@ build C$:/Users/MSI/Desktop/practica2/P2/bin/test_song_list.exe: C_EXECUTABLE_LI
 build cmake_object_order_depends_target_test_user_list: phony || CMakeFiles/test_user_list.dir
 
 build CMakeFiles/test_user_list.dir/test_user_list.c.obj: C_COMPILER__test_user_list_unscanned_Debug C$:/Users/MSI/Desktop/practica2/P2/test_user_list.c || cmake_object_order_depends_target_test_user_list
-  DEFINES = -DINPUT_FILE=\"delete1.txt\"
+  DEFINES = -DINPUT_FILE=\"upgrade.txt\"
   DEP_FILE = CMakeFiles\test_user_list.dir\test_user_list.c.obj.d
   FLAGS = -g -std=gnu99 -fdiagnostics-color=always -Wall -Wextra
   OBJECT_DIR = CMakeFiles\test_user_list.dir
   OBJECT_FILE_DIR = CMakeFiles\test_user_list.dir
 
 build CMakeFiles/test_user_list.dir/user_list.c.obj: C_COMPILER__test_user_list_unscanned_Debug C$:/Users/MSI/Desktop/practica2/P2/user_list.c || cmake_object_order_depends_target_test_user_list
-  DEFINES = -DINPUT_FILE=\"delete1.txt\"
+  DEFINES = -DINPUT_FILE=\"upgrade.txt\"
   DEP_FILE = CMakeFiles\test_user_list.dir\user_list.c.obj.d
   FLAGS = -g -std=gnu99 -fdiagnostics-color=always -Wall -Wextra
   OBJECT_DIR = CMakeFiles\test_user_list.dir
@@ -132,21 +132,21 @@ build C$:/Users/MSI/Desktop/practica2/P2/bin/test_user_list.exe: C_EXECUTABLE_LI
 build cmake_object_order_depends_target_main: phony || CMakeFiles/main.dir
 
 build CMakeFiles/main.dir/main.c.obj: C_COMPILER__main_unscanned_Debug C$:/Users/MSI/Desktop/practica2/P2/main.c || cmake_object_order_depends_target_main
-  DEFINES = -DINPUT_FILE=\"delete1.txt\"
+  DEFINES = -DINPUT_FILE=\"upgrade.txt\"
   DEP_FILE = CMakeFiles\main.dir\main.c.obj.d
   FLAGS = -g -std=gnu99 -fdiagnostics-color=always -Wall -Wextra
   OBJECT_DIR = CMakeFiles\main.dir
   OBJECT_FILE_DIR = CMakeFiles\main.dir
 
 build CMakeFiles/main.dir/song_list.c.obj: C_COMPILER__main_unscanned_Debug C$:/Users/MSI/Desktop/practica2/P2/song_list.c || cmake_object_order_depends_target_main
-  DEFINES = -DINPUT_FILE=\"delete1.txt\"
+  DEFINES = -DINPUT_FILE=\"upgrade.txt\"
   DEP_FILE = CMakeFiles\main.dir\song_list.c.obj.d
   FLAGS = -g -std=gnu99 -fdiagnostics-color=always -Wall -Wextra
   OBJECT_DIR = CMakeFiles\main.dir
   OBJECT_FILE_DIR = CMakeFiles\main.dir
 
 build CMakeFiles/main.dir/user_list.c.obj: C_COMPILER__main_unscanned_Debug C$:/Users/MSI/Desktop/practica2/P2/user_list.c || cmake_object_order_depends_target_main
-  DEFINES = -DINPUT_FILE=\"delete1.txt\"
+  DEFINES = -DINPUT_FILE=\"upgrade.txt\"
   DEP_FILE = CMakeFiles\main.dir\user_list.c.obj.d
   FLAGS = -g -std=gnu99 -fdiagnostics-color=always -Wall -Wextra
   OBJECT_DIR = CMakeFiles\main.dir
