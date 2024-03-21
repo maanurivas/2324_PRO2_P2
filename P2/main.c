@@ -93,7 +93,6 @@ Salida: Devuelve true en caso de que el parametro introducido sea "basic" o fals
 Precondiciones: Recibe basic o pro
 Postcondiciones: -
 */
-
 tUserCategory char_to_UserCategory(char param[]);
 /*
 Objetivo: Convierte el parametro introducido al programa ("basic"/"pro") a tipo tUserCategory
@@ -118,6 +117,9 @@ void processCommand(char *commandNumber, char command, char *param1, char *param
             Delete(param1,U);
             break;
         case 'A':
+            printf("********************\n"
+                   "%s %c: user %s song %s\n",commandNumber,command,param1,param2);
+            Add(param1,param2,U);
             break;
         case 'U':
             printf("********************\n"
@@ -262,38 +264,24 @@ void Add(tUserName userName, tSongTitle songTitle, tListU *U){
     bool insertado;
     tSong auxSong;
 
-    if(isEmptyListU(U)){//COMPROBAMOS QUE LA LISTA NO ESTÉ VACÍA
+    if(isEmptyListU(*U)){//COMPROBAMOS QUE LA LISTA NO ESTÉ VACÍA
         printf("+ Error: New not possible\n");
-    } else if(findItemU(userName, *U) == NULLU){//COMPROBAMOS QUE EL USUARIO SE ENCUENTRE EN LA LISTA
-        printf("+ Error: New not possible\n");
-    } else if(findItemS(songTitle,ITEM.songList)!=NULLS){//COMPROBAMOS QUE LA CANCIÓN NO EXISTA
-        printf("+ Error: New not possible\n");
-    } else{
-        strcpy(auxSong.songTitle, songTitle);//copiamos el dato del titulo de la cancion en el nombre del elemento a insertar
-        insertado = insertItemS(auxSong,ITEM.songList.lastPos,&ITEM.songList);
-        if(!insertado){
+    } else {
+        ITEM = getItemU(userName, U);
+        if (findItemU(userName, *U) == NULLU) {//COMPROBAMOS QUE EL USUARIO SE ENCUENTRE EN LA LISTA
             printf("+ Error: New not possible\n");
-        } else{
-            printf("* Add: user %s adds song %s",userName, auxSong.songTitle);
-        }
-    }
-
-    /*
-    else{
-        strcpy(ITEM.userName,userName);//copiamos el dato del nombre en el nombre del nuevo
-        ITEM.userCategory=userCategory;//asignamos su categoria a la variable correspondiente
-        insertado = insertItemU(ITEM, U);//insertamos el usuario
-        if(!insertado){
+        } else if (findItemS(songTitle, ITEM.songList) != NULLS) {//COMPROBAMOS QUE LA CANCIÓN NO EXISTA
             printf("+ Error: New not possible\n");
-        } else{//con el usuario ya insertado
-            if(ITEM.userCategory){//comprobamos la categoría del usuario para imprimir correctamente la categoría del usuario
-                UserCategory = "basic";
-            } else{
-                UserCategory = "pro";
+        } else {
+            strcpy(auxSong.songTitle,
+                   songTitle);//copiamos el dato del titulo de la cancion en el nombre del elemento a insertar
+            insertado = insertItemS(auxSong, ITEM.songList.lastPos, &ITEM.songList);
+            if (!insertado) {
+                printf("+ Error: New not possible\n");
+            } else {
+                printf("* Add: user %s adds song %s\n", userName, auxSong.songTitle);
             }
-            printf("* New: user %s category %s\n", ITEM.userName, UserCategory);//impresion por pantalla
         }
     }
-     */
 }
 
