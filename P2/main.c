@@ -113,6 +113,9 @@ void processCommand(char *commandNumber, char command, char *param1, char *param
             New(param1, char_to_UserCategory(param2),U);
             break;
         case 'D':
+            printf("********************\n"
+                   "%s %c: user %s\n",commandNumber, command,param1);
+            Delete(param1,U);
             break;
         case 'A':
             break;
@@ -207,6 +210,28 @@ void New(tUserName userName, tUserCategory userCategory, tListU *U){
             }
             printf("* New: user %s category %s\n", ITEM.userName, UserCategory);//impresion por pantalla
         }
+    }
+}
+
+void Delete(tUserName userName, tListU *U){
+    tPosU p;
+    tItemU auxITEM;
+    char *UserCategory;
+    int auxTotalPlayTime;//variables auxiliares para trabajar sobre ellas
+
+    p = findItemU(userName, *U);//Buscamos el nombre
+    if(p==NULLU){//No esta en la lista o está vacía
+        printf("+ Error: Delete not possible\n");
+    } else{//Está en la lista
+        auxITEM = getItemU(p, *U);//Obtenemos el user
+        auxTotalPlayTime=auxITEM.totalPlayTime;
+        if(auxITEM.userCategory){//comprobamos la categoria del usuario
+            UserCategory = "basic";
+        } else{
+            UserCategory = "pro";
+        }
+        deleteAtPositionU(p, U);//lo eliminamos
+        printf("* Delete: user %s category %s totalplaytime %d\n", userName, UserCategory, auxTotalPlayTime);//imprimimos lo solicitado
     }
 }
 
