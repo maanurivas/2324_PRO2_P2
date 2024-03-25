@@ -104,7 +104,7 @@ void deleteAtPositionU(tPosU p, tListU *U){
     }
 }
 
-tItemU getItemU(tPosU p, tListU J){
+tItemU getItemU(tPosU p, tListU U){
     return p->data;
 }
 

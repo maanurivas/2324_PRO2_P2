@@ -127,6 +127,9 @@ void processCommand(char *commandNumber, char command, char *param1, char *param
             Upgrade(param1,U);
             break;
         case 'P':
+            printf("********************\n"
+                   "%s %c: user %s\n",commandNumber, command,param1);
+            Play(param1,param2, atoi(param3),U);
             break;
         case 'S':
             break;
@@ -204,6 +207,7 @@ void New(tUserName userName, tUserCategory userCategory, tListU *U){
     } else{
         strcpy(ITEM.userName,userName);//copiamos el dato del nombre en el nombre del nuevo
         ITEM.userCategory=userCategory;//asignamos su categoria a la variable correspondiente
+        ITEM.totalPlayTime=0;
         insertado = insertItemU(ITEM, U);//insertamos el usuario
         if(!insertado){
             printf("+ Error: New not possible\n");
@@ -213,6 +217,7 @@ void New(tUserName userName, tUserCategory userCategory, tListU *U){
             } else{
                 UserCategory = "pro";
             }
+
             printf("* New: user %s category %s\n", ITEM.userName, UserCategory);//impresion por pantalla
         }
     }
@@ -260,28 +265,62 @@ void Upgrade(tUserName userName, tListU *U){
 }
 
 void Add(tUserName userName, tSongTitle songTitle, tListU *U){
+    tPosU p;
     tItemU ITEM;
     bool insertado;
-    tSong auxSong;
+    tItemS auxSong;
 
     if(isEmptyListU(*U)){//COMPROBAMOS QUE LA LISTA NO ESTÉ VACÍA
         printf("+ Error: New not possible\n");
     } else {
-        ITEM = getItemU(userName, U);
+        p= findItemU(userName,*U);
         if (findItemU(userName, *U) == NULLU) {//COMPROBAMOS QUE EL USUARIO SE ENCUENTRE EN LA LISTA
             printf("+ Error: New not possible\n");
-        } else if (findItemS(songTitle, ITEM.songList) != NULLS) {//COMPROBAMOS QUE LA CANCIÓN NO EXISTA
+        }
+        ITEM = getItemU(p, U);
+        if (findItemS(songTitle, ITEM.songList) != NULLS) {//COMPROBAMOS QUE LA CANCIÓN NO EXISTA
             printf("+ Error: New not possible\n");
         } else {
             strcpy(auxSong.songTitle,
                    songTitle);//copiamos el dato del titulo de la cancion en el nombre del elemento a insertar
+            auxSong.playTime=0;
             insertado = insertItemS(auxSong, ITEM.songList.lastPos, &ITEM.songList);
             if (!insertado) {
                 printf("+ Error: New not possible\n");
             } else {
+                updateItemU(ITEM,p,U);
                 printf("* Add: user %s adds song %s\n", userName, auxSong.songTitle);
             }
         }
     }
 }
+
+void Play(tUserName name, tSongTitle  title, tPlayTime playTime, tListU *U) {
+    tPosU p;
+    tItemU auxUSER;//variables auxiliares para trabajar sobre ellas
+    tPosS q;
+    tItemS auxSONG;
+
+    if (isEmptyListU(*U)) {//COMPROBAMOS QUE LA LISTA NO ESTÉ VACÍA
+        printf("+ Error: Play not possible\n");
+    }
+    p= findItemU(name,*U);
+    if (p == NULLU) {//COMPROBAMOS QUE EL USUARIO SE ENCUENTRE EN LA LISTA
+        printf("+ Error: Play not possible\n");
+    }
+    auxUSER = getItemU(p, *U);
+    if(isEmptyListS(auxUSER.songList)){//COMPROBAMOS QUE LA LISTA DE CANCIONES NO ESTÉ VACIA
+        printf("+ Error: Play not possible\n");
+    } else{
+        q= findItemS(title,auxUSER.songList);
+        auxSONG= getItemS(q,auxUSER.songList);
+        auxSONG.playTime=auxSONG.playTime+playTime;
+        updateItemS(auxSONG,q,&auxUSER.songList);
+        auxUSER.totalPlayTime=auxUSER.totalPlayTime+auxSONG.playTime;
+        updateItemU(auxUSER,p,U);
+        printf("* Play: user %s plays song %s playtime %d totalplaytime %d\n",name,title,playTime,auxUSER.totalPlayTime);
+    }
+}
+
+
 
