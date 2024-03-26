@@ -132,8 +132,14 @@ void processCommand(char *commandNumber, char command, char *param1, char *param
             Play(param1,param2, atoi(param3),U);
             break;
         case 'S':
+            printf("********************\n"
+                   "%s %c:\n",commandNumber, command);
+            Stats(*U);
             break;
         case 'R':
+            printf("********************\n"
+                   "%s %c: maxtime %s\n",commandNumber, command,param1);
+            Remove(atoi(param1),U);
             break;
         default:
             break;
@@ -328,7 +334,7 @@ void Remove(tPlayTime maxTime, tListU *U){
     tPosU p;
 
     if(isEmptyListU(*U)){
-        printf("+ Error: Remove not possible");
+        printf("+ Error: Remove not possible\n");
     }
     p= firstU(*U);
     auxUSER = getItemU(p,*U);
@@ -345,3 +351,48 @@ void Remove(tPlayTime maxTime, tListU *U){
 }
 
 
+void Stats(tListU U){
+    tPosU p;
+    tItemU auxUSER;
+    tItemS auxSONG;
+    char *UserCategory;
+    int cntBasic=0, cntPro=0, minsBasic=0, minsPro=0;
+    float mediaBasic=0.0f, mediaPro=0.0f;
+
+    if(isEmptyListU(U)){
+        printf("+ Error: Stats not possible\n");
+    } else{
+        for(p=U;p->next!=NULLU;p=p->next){
+            auxUSER= getItemU(p,U);
+            if(UserCategory_to_char(auxUSER.userCategory)=="basic"){
+                UserCategory="basic";
+                cntBasic=cntBasic+1;
+                minsBasic+=auxUSER.totalPlayTime;
+            } else{
+                UserCategory="pro";
+                cntPro=cntPro+1;
+                minsPro+=auxUSER.totalPlayTime;
+            }
+            printf("User %s category %s totalplaytime %d\n",auxUSER.userName,UserCategory_to_char(auxUSER.userCategory),auxUSER.totalPlayTime);
+            if(!isEmptyListS(auxUSER.songList)){
+                for (tPosS i=0; nextS(i,auxUSER.songList)!=NULLS; i=nextS(i,auxUSER.songList)) {
+                    auxSONG= getItemS(i,auxUSER.songList);
+                    printf("Song %s playtime %d\n",auxSONG.songTitle,auxSONG.playTime);
+                }
+            } else printf("No songs\n");
+        }
+        if((minsBasic==0)||(cntBasic==0)){
+            mediaBasic = 0.0f;
+        } else{
+            mediaBasic= (float) minsBasic/cntBasic;
+        }
+        if((minsPro==0)||(cntPro==0)){
+            mediaPro = 0.0f;
+        } else{
+            mediaPro= (float) minsPro/cntPro;
+        }
+        printf("Category  Users  TimePlay  Average\n");
+        printf("Basic     %5d %9d %8.2f\n",cntBasic,minsBasic,mediaBasic);
+        printf("Pro       %5d %9d %8.2f\n",cntPro,minsPro,mediaPro);
+    }
+}
