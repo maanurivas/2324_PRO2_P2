@@ -128,7 +128,7 @@ void processCommand(char *commandNumber, char command, char *param1, char *param
             break;
         case 'P':
             printf("********************\n"
-                   "%s %c: user %s\n",commandNumber, command,param1);
+                   "%s %c: user %s song %s minutes %s\n",commandNumber, command,param1,param2,param3);
             Play(param1,param2, atoi(param3),U);
             break;
         case 'S':
@@ -214,6 +214,7 @@ void New(tUserName userName, tUserCategory userCategory, tListU *U){
         strcpy(ITEM.userName,userName);//copiamos el dato del nombre en el nombre del nuevo
         ITEM.userCategory=userCategory;//asignamos su categoria a la variable correspondiente
         ITEM.totalPlayTime=0;
+        createEmptyListS(&ITEM.songList);
         insertado = insertItemU(ITEM, U);//insertamos el usuario
         if(!insertado){
             printf("+ Error: New not possible\n");
@@ -233,21 +234,20 @@ void Delete(tUserName userName, tListU *U){
     tPosU p;
     tItemU auxITEM;
     char *UserCategory;
-    int auxTotalPlayTime;//variables auxiliares para trabajar sobre ellas
+    //variables auxiliares para trabajar sobre ellas
 
     p = findItemU(userName, *U);//Buscamos el nombre
     if(p==NULLU){//No esta en la lista o está vacía
         printf("+ Error: Delete not possible\n");
     } else{//Está en la lista
         auxITEM = getItemU(p, *U);//Obtenemos el user
-        auxTotalPlayTime=auxITEM.totalPlayTime;
         if(auxITEM.userCategory){//comprobamos la categoria del usuario
             UserCategory = "basic";
         } else{
             UserCategory = "pro";
         }
         deleteAtPositionU(p, U);//lo eliminamos
-        printf("* Delete: user %s category %s totalplaytime %d\n", userName, UserCategory, auxTotalPlayTime);//imprimimos lo solicitado
+        printf("* Delete: user %s category %s totalplaytime %d\n", userName, UserCategory, auxITEM.totalPlayTime);//imprimimos lo solicitado
     }
 }
 
@@ -260,10 +260,10 @@ void Upgrade(tUserName userName, tListU *U){
         printf("+ Error: Upgrade not possible\n");
     } else{
         auxITEM = getItemU(p, *U);//caso en el que la categoría ya es pro
-        if (UserCategory_to_char(auxITEM.userCategory) == "pro") {//comprobamos que su categoría no es pro usando una función auxiliar para pasar a char los userCategory
+        if (strcmp(UserCategory_to_char(auxITEM.userCategory),"pro")==0) {//comprobamos que su categoría no es pro usando una función auxiliar para pasar a char los userCategory
             printf("+ Error: Upgrade not possible\n");
         } else{//está en la lista
-            auxITEM.userCategory= char_to_UserCategory("pro"); // Pasamos la categoría a "pro"
+            auxITEM.userCategory=char_to_UserCategory("pro"); // Pasamos la categoría a "pro"
             updateItemU(auxITEM, p, U); // Actualiza el usuario en la lista
             printf("* Upgrade: user %s category %s\n", userName, UserCategory_to_char(auxITEM.userCategory));//Imprimimos por pantalla
         }
@@ -277,22 +277,21 @@ void Add(tUserName userName, tSongTitle songTitle, tListU *U){
     tItemS auxSong;
 
     if(isEmptyListU(*U)){//COMPROBAMOS QUE LA LISTA NO ESTÉ VACÍA
-        printf("+ Error: New not possible\n");
+        printf("+ Error: Add not possible\n");
     } else {
         p= findItemU(userName,*U);
-        if (findItemU(userName, *U) == NULLU) {//COMPROBAMOS QUE EL USUARIO SE ENCUENTRE EN LA LISTA
-            printf("+ Error: New not possible\n");
+        if (p == NULLU) {//COMPROBAMOS QUE EL USUARIO SE ENCUENTRE EN LA LISTA
+            printf("+ Error: Add not possible\n");
         }
-        ITEM = getItemU(p, U);
+        ITEM = getItemU(p, *U);
         if (findItemS(songTitle, ITEM.songList) != NULLS) {//COMPROBAMOS QUE LA CANCIÓN NO EXISTA
-            printf("+ Error: New not possible\n");
+            printf("+ Error: Add not possible\n");
         } else {
-            strcpy(auxSong.songTitle,
-                   songTitle);//copiamos el dato del titulo de la cancion en el nombre del elemento a insertar
-            auxSong.playTime=0;
-            insertado = insertItemS(auxSong, ITEM.songList.lastPos, &ITEM.songList);
+            strcpy(auxSong.songTitle,songTitle);//copiamos el dato del titulo de la cancion en el nombre del elemento a insertar
+            auxSong.playTime=0;//asignamos el playtime a 0
+            insertado=insertItemS(auxSong, NULLS, &ITEM.songList);
             if (!insertado) {
-                printf("+ Error: New not possible\n");
+                printf("+ Error: Add not possible\n");
             } else {
                 updateItemU(ITEM,p,U);
                 printf("* Add: user %s adds song %s\n", userName, auxSong.songTitle);
@@ -339,14 +338,18 @@ void Remove(tPlayTime maxTime, tListU *U){
     p= firstU(*U);
     auxUSER = getItemU(p,*U);
     while (p!=NULLU && p<= lastU(*U)){
-        if(UserCategory_to_char(auxUSER.userCategory) == "basic" && auxUSER.totalPlayTime>maxTime){
+        if(strcmp(UserCategory_to_char(auxUSER.userCategory),"basic")==0 && auxUSER.totalPlayTime>maxTime){
             printf("Removing user %s totalplaytime %d\n",auxUSER.userName,auxUSER.totalPlayTime);
-            for (tPosS i=0; nextS(i,auxUSER.songList)!=NULLS;i= nextS(i,auxUSER.songList)){
+            for (tPosS i= firstS(auxUSER.songList); nextS(i,auxUSER.songList)!=NULLS;i= nextS(i,auxUSER.songList)){
                 deleteAtPositionS(i,&auxUSER.songList);
             }
             deleteAtPositionU(p,U);
-        } else p = p->next;
-        if (p!=NULLU) auxUSER = getItemU(p,*U);
+        } else{
+            p = nextU(p,*U);
+        }
+        if (p!=NULLU){
+            auxUSER = getItemU(p,*U);
+        }
     }
 }
 
@@ -355,41 +358,40 @@ void Stats(tListU U){
     tPosU p;
     tItemU auxUSER;
     tItemS auxSONG;
-    char *UserCategory;
     int cntBasic=0, cntPro=0, minsBasic=0, minsPro=0;
     float mediaBasic=0.0f, mediaPro=0.0f;
 
-    if(isEmptyListU(U)){
+    if(isEmptyListU(U)){//compruebo si está vacia
         printf("+ Error: Stats not possible\n");
     } else{
-        for(p=U;p->next!=NULLU;p=p->next){
-            auxUSER= getItemU(p,U);
-            if(UserCategory_to_char(auxUSER.userCategory)=="basic"){
-                UserCategory="basic";
+        for(p= firstU(U);p!=NULLU;p= nextU(p,U)){//recorro la lista de usuarios
+            auxUSER = getItemU(p,U);//obtengo el usuario
+            if(strcmp(UserCategory_to_char(auxUSER.userCategory),"basic")==0){//compruebo la categoria del usuario y aumento los contadores
                 cntBasic=cntBasic+1;
                 minsBasic+=auxUSER.totalPlayTime;
             } else{
-                UserCategory="pro";
                 cntPro=cntPro+1;
                 minsPro+=auxUSER.totalPlayTime;
             }
             printf("User %s category %s totalplaytime %d\n",auxUSER.userName,UserCategory_to_char(auxUSER.userCategory),auxUSER.totalPlayTime);
-            if(!isEmptyListS(auxUSER.songList)){
-                for (tPosS i=0; nextS(i,auxUSER.songList)!=NULLS; i=nextS(i,auxUSER.songList)) {
-                    auxSONG= getItemS(i,auxUSER.songList);
+            if(isEmptyListS(auxUSER.songList)){
+                printf("No songs\n");
+            } else {
+                for (tPosS i= firstS(auxUSER.songList); i!= NULLS; i=nextS(i,auxUSER.songList)) {
+                    auxSONG = getItemS(i,auxUSER.songList);
                     printf("Song %s playtime %d\n",auxSONG.songTitle,auxSONG.playTime);
                 }
-            } else printf("No songs\n");
+            }printf("\n");
         }
-        if((minsBasic==0)||(cntBasic==0)){
+        if(cntBasic==0){
             mediaBasic = 0.0f;
         } else{
-            mediaBasic= (float) minsBasic/cntBasic;
+            mediaBasic= (float)minsBasic/(float)cntBasic;
         }
-        if((minsPro==0)||(cntPro==0)){
+        if(cntPro==0){
             mediaPro = 0.0f;
         } else{
-            mediaPro= (float) minsPro/cntPro;
+            mediaPro= (float)minsPro/(float)cntPro;
         }
         printf("Category  Users  TimePlay  Average\n");
         printf("Basic     %5d %9d %8.2f\n",cntBasic,minsBasic,mediaBasic);
