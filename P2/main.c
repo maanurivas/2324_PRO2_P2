@@ -75,7 +75,7 @@ Salida:   Todos los datos que se requiere mostrar, o error en caso de que no se 
 Precondiciones: -
 Postcondiciones: -
 */
-void Remove(tPlayTime maxTime, tListU U);
+void Remove(tPlayTime maxTime, tListU *U);
 /*
 Objetivo: Elimina todos los usuarios basic cuyo contador de tiempo de reproducción exceda maxTime minutos.
 Entrada:  Un maximo de minutos de reproducción (tipo tPlayTime) y la lista (tipo tListU)
@@ -322,5 +322,26 @@ void Play(tUserName name, tSongTitle  title, tPlayTime playTime, tListU *U) {
     }
 }
 
+
+void Remove(tPlayTime maxTime, tListU *U){
+    tItemU auxUSER;
+    tPosU p;
+
+    if(isEmptyListU(*U)){
+        printf("+ Error: Remove not possible");
+    }
+    p= firstU(*U);
+    auxUSER = getItemU(p,*U);
+    while (p!=NULLU && p<= lastU(*U)){
+        if(UserCategory_to_char(auxUSER.userCategory) == "basic" && auxUSER.totalPlayTime>maxTime){
+            printf("Removing user %s totalplaytime %d\n",auxUSER.userName,auxUSER.totalPlayTime);
+            for (tPosS i=0; nextS(i,auxUSER.songList)!=NULLS;i= nextS(i,auxUSER.songList)){
+                deleteAtPositionS(i,&auxUSER.songList);
+            }
+            deleteAtPositionU(p,U);
+        } else p = p->next;
+        if (p!=NULLU) auxUSER = getItemU(p,*U);
+    }
+}
 
 
